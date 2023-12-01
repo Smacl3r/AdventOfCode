@@ -1,4 +1,5 @@
-﻿var dataLines = File.ReadAllLines("../../../data.txt");
+﻿// Posible improvements to combine CalculateFirstNumberWordIndex and CalculateLastNumberWordIndex methods to reduce code duplication
+var dataLines = File.ReadAllLines("../../../data.txt");
 
 var sum = 0;
 
@@ -9,27 +10,17 @@ foreach (var line in dataLines)
     var digits = CalculateDigits(line);
     sum += digits;
 }
+Console.WriteLine(sum);
 
 int CalculateDigits(string line)
 {
-
     var firstDigitIndex = line.IndexOfAny(possibleDigits);
     var (firstWordDigitIndex, firstDigit) = CalculateFirstNumberWordIndex(line);
     var lastDigitIndex = line.LastIndexOfAny(possibleDigits);
     var (lastWordDigitIndex, lastDigit) = CalculateLastNumberWordIndex(line);
 
-    double answerFirstDigit = 0;
-    double answerLastDigit = 0;
-
-    if (firstDigitIndex < firstWordDigitIndex)
-        answerFirstDigit = char.GetNumericValue(line[firstDigitIndex]);
-    else
-        answerFirstDigit = firstDigit;
-
-    if(lastDigitIndex > lastWordDigitIndex)
-        answerLastDigit = char.GetNumericValue(line[lastDigitIndex]);
-    else
-        answerLastDigit = lastDigit;
+    double answerFirstDigit = firstDigitIndex < firstWordDigitIndex ? char.GetNumericValue(line[firstDigitIndex]) : firstDigit;
+    double answerLastDigit = lastDigitIndex > lastWordDigitIndex ? char.GetNumericValue(line[lastDigitIndex]) : lastDigit;
 
     return int.Parse(answerFirstDigit.ToString() + answerLastDigit.ToString());
 }
@@ -71,5 +62,3 @@ int CalculateDigits(string line)
     }
     return (index, digit);
 }
-
-System.Console.WriteLine(sum);
